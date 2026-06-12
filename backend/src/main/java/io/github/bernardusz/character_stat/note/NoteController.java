@@ -16,6 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "localhost:5173")
 public class NoteController {
   private final NoteService noteService;
+
   public NoteController(NoteService noteService) {
     this.noteService = noteService;
   }
@@ -27,21 +28,23 @@ public class NoteController {
 
   @GetMapping("/{userId}/notes/{id}")
   public ResponseEntity<Note> findById(@PathVariable Long id) {
-    return  ResponseEntity.ok(noteService.findById(id));
+    return ResponseEntity.ok(noteService.findById(id));
   }
 
   @PostMapping("/{userId}/notes")
   public ResponseEntity<Void> save(@PathVariable Long userId, @RequestBody NoteCreate noteCreate) {
-    return noteService.save(userId, noteCreate)
-      .map(id -> {
-        URI uri = ServletUriComponentsBuilder
-          .fromCurrentRequest()
-          .path("/{id}")
-          .buildAndExpand(id)
-          .toUri();
-        return ResponseEntity.created(uri).<Void>build();
-      })
-      .orElseGet(() -> ResponseEntity.notFound().build());
+    return noteService
+        .save(userId, noteCreate)
+        .map(
+            id -> {
+              URI uri =
+                  ServletUriComponentsBuilder.fromCurrentRequest()
+                      .path("/{id}")
+                      .buildAndExpand(id)
+                      .toUri();
+              return ResponseEntity.created(uri).<Void>build();
+            })
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PutMapping("/{userId}/notes/{id}")
@@ -55,5 +58,4 @@ public class NoteController {
     noteService.delete(id);
     return ResponseEntity.noContent().build();
   }
-
 }

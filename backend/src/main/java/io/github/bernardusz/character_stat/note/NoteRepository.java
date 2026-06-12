@@ -3,11 +3,10 @@ package io.github.bernardusz.character_stat.note;
 import io.github.bernardusz.character_stat.note.dto.NoteCreate;
 import io.github.bernardusz.character_stat.note.dto.NoteSummary;
 import io.github.bernardusz.character_stat.note.dto.NoteUpdate;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class NoteRepository {
