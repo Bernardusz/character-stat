@@ -57,4 +57,10 @@ public class TaskController {
     taskService.delete(id);
     return ResponseEntity.noContent().build();
   }
+
+  @GetMapping("/{userId}/tasks-full")
+  public ResponseEntity<List<TaskWithoutNote>> fetchAllInboxTasksByProfileId(@PathVariable Long userId) {
+    return ResponseEntity.ok(taskService.fetchAllInboxTasksByProfileId(userId));
+  }
+
 }

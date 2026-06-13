@@ -46,4 +46,9 @@ public class TaskService {
   public void delete(Long id) {
     taskRepository.delete(id);
   }
+
+  @Transactional(readOnly = true)
+  public List<TaskWithoutNote> fetchAllInboxTasksByProfileId(Long userId) {
+    return taskRepository.fetchAllInboxTasksByProfileId(userId);
+  }
 }

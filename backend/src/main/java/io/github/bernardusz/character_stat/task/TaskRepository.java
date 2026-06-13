@@ -119,5 +119,22 @@ public class TaskRepository {
     .update();
   }
 
+  public List<TaskWithoutNote> fetchAllInboxTasksByProfileId(Long userId){
+    return jdbcClient.sql(
+      """
+      SELECT
+          id,
+          note_id AS noteId,
+          title,
+          position,
+          urgency_tier AS urgencyTier,
+          status,
+          created_at AS createdAt
+        FROM tasks
+        WHERE user_id = :userId AND note_id IS NULL
+        ORDER BY position ASC;
+      """
+    ).param("userId", userId).query(TaskWithoutNote.class).list();
+  }
 
 }
