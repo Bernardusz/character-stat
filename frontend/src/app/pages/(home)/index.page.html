@@ -1,0 +1,60 @@
+<main class="page">
+	@if (isLoading()) {
+		<section class="flex flex-col items-center justify-center section">
+			<div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+			<p class="text-slate-400 text-sm font-medium animate-pulse">Syncing dashboard neural state grids...</p>
+		</section>
+	}
+	@else if (dashboard(); as data) {
+		<section class="section flex flex-col xl:flex-row">
+			<div class="mb-12 flex-4">
+				<h2 class="text-xl font-bold mb-4 tracking-tight text-slate-200 flex items-center space-x-2">
+					<span>📂 Active Notebook Workspaces</span>
+				</h2>
+				
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					@for (note of data.notes; track note.id) {
+					<div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col justify-between">
+						<div>
+						<div class="flex justify-between items-start mb-4">
+							<h3 class="text-lg font-bold text-white">{{ note.title }}</h3>
+							<span class="text-xs px-2 py-0.5 bg-indigo-950 text-indigo-300 border border-indigo-900 font-semibold rounded-full uppercase tracking-wider">
+							{{ note.category }}
+							</span>
+						</div>
+
+						<div class="space-y-2">
+							@for (task of note.tasks; track task.id) {
+							<app-task-item [task]="task"></app-task-item>
+							} @empty {
+							<p class="text-xs text-slate-500 italic p-3 text-center bg-slate-800/20 border border-dashed border-slate-800 rounded-lg">
+								No items inside this folder yet.
+							</p>
+							}
+						</div>
+						</div>
+					</div>
+					}
+				</div>
+				</div>
+
+				<div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
+				<h2 class="text-xl font-bold mb-2 tracking-tight text-slate-200 flex items-center space-x-2">
+					<span>📥 Standalone Tasks Bucket</span>
+				</h2>
+				<p class="text-xs text-slate-400 mb-4">Quick modifications or thoughts that haven't been compiled into a distinct notebook project container.</p>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+					@for (task of data.inboxTasks; track task.id) {
+					<app-task-item [task]="task"></app-task-item>
+					} @empty {
+					<div class="col-span-2 p-8 text-center bg-slate-950 border border-dashed border-slate-800 rounded-xl">
+						<p class="text-sm text-slate-500 font-medium">Your standalone inbox container is empty.</p>
+					</div>
+					}
+				</div>
+			</div>
+			<app-stat-bars class="flex-1" [stats]="data.characterStats"></app-stat-bars>
+		</section>
+	}
+</main>

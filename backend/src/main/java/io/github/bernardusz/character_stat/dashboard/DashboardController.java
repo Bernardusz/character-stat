@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "location")
 @RequestMapping("/api/profiles")
 public class DashboardController {
   private final DashboardService dashboardService;

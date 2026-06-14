@@ -9,7 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/profiles")
-@CrossOrigin(origins = "localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "location")
 public class TaskController {
   private final TaskService taskService;
   public TaskController(TaskService taskService) {

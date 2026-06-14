@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/profiles")
-@CrossOrigin(origins = "localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "location")
 public class NoteController {
   private final NoteService noteService;
 
