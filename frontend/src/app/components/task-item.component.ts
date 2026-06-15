@@ -5,7 +5,7 @@ import { TaskSummary } from '@/app/types/dashboard.types';
   selector: 'app-task-item',
   standalone: true,
   template: `
-    <div class="flex items-center justify-between p-4 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 rounded-lg transition group">
+    <div class="flex items-center justify-between p-4 bg-background text-foreground border border-primary rounded-lg transition group  hover:scale-105">
       <div class="flex items-center space-x-3">
         <div class="w-5 h-5 rounded border border-slate-500 flex items-center justify-center cursor-pointer hover:border-emerald-400 transition"
              [class.bg-emerald-500]="task().status === 'DONE'"
@@ -15,7 +15,7 @@ import { TaskSummary } from '@/app/types/dashboard.types';
           }
         </div>
         
-        <span class="text-slate-200 group-hover:text-white transition" 
+        <span class="text-foreground" 
               [class.line-through]="task().status === 'DONE'"
               [class.text-slate-500]="task().status === 'DONE'">
           {{ task().title }}

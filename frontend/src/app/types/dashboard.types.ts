@@ -22,10 +22,22 @@ export interface TaskSummary {
 }
 
 export interface NoteInventoryTree {
-  id: number;
+  id: string;
   title: string;
   category: 'PROJECT' | 'LEARNING' | 'BRAINDUMP';
   tasks: TaskSummary[];
+}
+
+export interface NoteCreationEdit {
+  id: string | null
+  title: string;
+  content: string;
+  category: 'PROJECT' | 'LEARNING' | 'BRAINDUMP' | 'HOBBY';
+}
+
+export interface Note{
+  noteSummary: NoteInventoryTree;
+  content: string;
 }
 
 export interface DashboardData {

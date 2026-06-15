@@ -1,6 +1,7 @@
 package io.github.bernardusz.character_stat.note;
 
 import io.github.bernardusz.character_stat.note.dto.NoteCreate;
+import io.github.bernardusz.character_stat.note.dto.NoteDetail;
 import io.github.bernardusz.character_stat.note.dto.NoteSummary;
 import io.github.bernardusz.character_stat.note.dto.NoteUpdate;
 import java.util.List;
@@ -24,7 +25,7 @@ public class NoteService {
   }
 
   @Transactional(readOnly = true)
-  public Note findById(Long id) {
+  public NoteDetail findById(Long id) {
     return noteRepository
         .findById(id)
         .orElseThrow(

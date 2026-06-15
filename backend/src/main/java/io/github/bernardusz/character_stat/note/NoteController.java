@@ -1,6 +1,7 @@
 package io.github.bernardusz.character_stat.note;
 
 import io.github.bernardusz.character_stat.note.dto.NoteCreate;
+import io.github.bernardusz.character_stat.note.dto.NoteDetail;
 import io.github.bernardusz.character_stat.note.dto.NoteSummary;
 import io.github.bernardusz.character_stat.note.dto.NoteUpdate;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class NoteController {
   }
 
   @GetMapping("/{userId}/notes/{id}")
-  public ResponseEntity<Note> findById(@PathVariable Long id) {
+  public ResponseEntity<NoteDetail> findById(@PathVariable Long id) {
     return ResponseEntity.ok(noteService.findById(id));
   }
 

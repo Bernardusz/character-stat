@@ -1,10 +1,19 @@
 package io.github.bernardusz.character_stat.note;
 
+import io.github.bernardusz.character_stat.dashboard.dto.NoteInventoryTreeResponse;
 import io.github.bernardusz.character_stat.note.dto.NoteCreate;
+import io.github.bernardusz.character_stat.note.dto.NoteDetail;
 import io.github.bernardusz.character_stat.note.dto.NoteSummary;
 import io.github.bernardusz.character_stat.note.dto.NoteUpdate;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import io.github.bernardusz.character_stat.task.TaskStatus;
+import io.github.bernardusz.character_stat.task.TaskUrgency;
+import io.github.bernardusz.character_stat.task.dto.TaskSummary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -27,16 +36,58 @@ public class NoteRepository {
         .list();
   }
 
-  public Optional<Note> findById(Long id){
-    return jdbcClient
+  public Optional<NoteDetail> findById(Long id){
+    NoteDetail noteDetail = jdbcClient
       .sql("""
-          SELECT *
-          FROM notes
-          WHERE id = :id
+          SELECT
+            n.id AS noteId,
+            n.title AS noteTitle,
+            n.content AS noteContent,
+            n.category AS noteCategory,
+            t.id AS taskId,
+            t.title AS taskTitle,
+            t.position AS taskPosition,
+            t.urgency_tier AS taskUrgency,
+            t.status AS taskStatus,
+            t.created_at AS taskCreatedAt
+          FROM notes n
+          LEFT JOIN tasks t ON n.id = t.note_id
+          WHERE n.id = :id
           """)
       .param("id", id)
-      .query(Note.class)
-      .optional();
+      .query((ResultSet rs) -> {
+          NoteDetail detail = null;
+          while (rs.next()){
+            if (detail == null) {
+              detail = new NoteDetail(
+                new NoteInventoryTreeResponse(
+                  rs.getLong("noteId"),
+                  rs.getString("noteTitle"),
+                  NoteCategory.valueOf(rs.getString("noteCategory")),
+                  new ArrayList<>()
+                ),
+                rs.getString("noteContent")
+              );
+            }
+
+            Long taskId = rs.getLong("taskId");
+            if (!rs.wasNull()) {
+              TaskSummary taskSummary = new TaskSummary(
+                taskId,
+                rs.getLong("noteId"),
+                rs.getString("noteTitle"),
+                rs.getString("taskTitle"),
+                rs.getInt("taskPosition"),
+                TaskUrgency.valueOf(rs.getString("taskUrgency")),
+                TaskStatus.valueOf(rs.getString("taskStatus")),
+                rs.getTimestamp("taskCreatedAt").toLocalDateTime()
+              );
+              detail.noteSummary().tasks().add(taskSummary);
+            }
+        }
+          return detail;
+      });
+    return Optional.of(noteDetail);
   }
 
   public Optional<Long> save(Long userId, NoteCreate noteCreate){

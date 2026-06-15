@@ -1,0 +1,53 @@
+<main class="page">
+	@if(isLoading() !== true && isEditing() && note(); as note) {
+		<button class="absolute top-32 text-background left-4 btn-primary bg-primary p-2 rounded-2xl" (click)="isEditing.set(false)">
+			Go Back
+		</button>
+		<form-note
+			method="PUT"
+			[id]="note.noteSummary.id"
+			text="Edit a workspace container"
+			(task)="editNote($event)"
+			[data]="note"
+		>
+		</form-note>
+	}
+	@else if (isLoading() !== true && note(); as note) {
+		<section class="section flex flex-col justify-center items-center gap-4">
+			<div class="flex flex-col gap-2 top-8 right-4 absolute">
+				<button class="text-background btn-primary bg-primary p-2 rounded-2xl" (click)="isEditing.set(true)">
+					Edit this note
+				</button>
+				<button class="text-background btn-primary bg-red-500 p-2 rounded-2xl" (click)="deleteNote(note.noteSummary.id)">
+					Delete this note
+				</button>
+			</div>
+			<div class="flex flex-col items-center justify-between">
+				<h1>{{ note.noteSummary.title }}</h1>
+				<span>
+					{{note.noteSummary.category}}
+				</span>
+			</div>
+			<hr>
+			<p>{{ note.content }}</p>		
+		</section>
+		<aside>
+			@let taskCreationUrl = "/profiles" + profileState.activeProfile()?.id + "/tasks/create?note=" + note.noteSummary.id;	
+			<div class="flex flex-col xl:flex-row justify-between w-full">
+				<h2>Related task</h2>
+				<a [routerLink]="taskCreationUrl"></a>
+			</div>
+			@for (task of note.noteSummary.tasks; track $index) {
+				<app-task-item [task]="task"></app-task-item>
+			}
+		</aside>
+	}
+	@else if (isLoading() !== null && note() === null) {
+		<p>
+			Error fetching data
+		</p>
+	}
+	@else {
+		<p>Loading</p>
+	}
+</main>

@@ -1,7 +1,4 @@
-import { Location } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
-import { Component, inject, input, output } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, input, output } from "@angular/core";
 
 @Component({
 	standalone: true,
@@ -23,8 +20,6 @@ import { Router } from "@angular/router";
 	`
 })
 export default class FormProfileComponent {
-	private readonly router = inject(Router);
-
 	method = input.required<'POST' | 'PUT'>();
 	username = input<string>();
 	task = output<string>();

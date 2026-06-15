@@ -11,7 +11,7 @@ export class ProfileStateService{
 
 	private readonly _activeProfile = signal<Profile | null>(this.loadProfileFromStorage());
 	readonly activeProfile = this._activeProfile.asReadonly();
-	readonly hasProfile = computed(() => this._activeProfile() !== null);
+	readonly hasProfile = computed(() => this._activeProfile !== null);
 
 	setActiveProfile(profile: Profile | null){
 		this._activeProfile.set(profile);
