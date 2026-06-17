@@ -7,6 +7,5 @@ public record TaskCreate(
     Long noteId,
     String title,
     String description,
-    Integer position,
     TaskUrgency urgencyTier,
     TaskStatus status) {}

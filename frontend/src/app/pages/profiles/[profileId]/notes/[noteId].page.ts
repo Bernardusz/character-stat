@@ -29,8 +29,12 @@ export default class NoteIdPage implements OnInit{
 	isLoading = signal(true);
 	isEditing = signal(false);
 
+	taskCreationUrl = signal<string | null>(null);
+
+
 	ngOnInit(): void {
 		this.getNote(this.noteId);
+		this.taskCreationUrl.set("/profiles/" + this.profileState.activeProfile()?.id + "/tasks/create?noteId=" + this.noteId);
 		this.isLoading.set(false);
 	}
 

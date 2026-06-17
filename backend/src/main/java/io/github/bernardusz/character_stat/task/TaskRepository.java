@@ -45,24 +45,24 @@ public class TaskRepository {
       .sql("""
            SELECT
             t.id,
-            t.note_id AS noteId,
-            n.title AS noteTitle,
+            t.note_id,
+            n.title AS note_title,
             t.title,
             t.description,
             t.position,
-            t.urgency_tier AS urgencyTier,
+            t.urgency_tier,
             t.status,
-            t.created_at AS createdAt
+            t.created_at
            FROM tasks t
            LEFT JOIN notes n on t.note_id = n.id
-           WHERE t.id = :noteId
+           WHERE t.id = :taskId
            """)
-      .param("noteId", id)
+      .param("taskId", id)
       .query(TaskNote.class)
       .optional();
   }
 
-  public Optional<Long> save(Long userId, TaskCreate taskCreate){
+  public Optional<Long> save(Long userId, TaskCreate taskCreate, Long position){
     return jdbcClient
       .sql("""
            INSERT INTO tasks
@@ -74,7 +74,7 @@ public class TaskRepository {
       .param("userId", userId)
       .param("title", taskCreate.title())
       .param("description", taskCreate.description())
-      .param("position", taskCreate.position())
+      .param("position", position)
       .param("urgencyTier", taskCreate.urgencyTier().name())
       .param("status", taskCreate.status().name())
       .query(Long.class)
@@ -135,6 +135,10 @@ public class TaskRepository {
         ORDER BY position ASC;
       """
     ).param("userId", userId).query(TaskWithoutNote.class).list();
+  }
+
+  public Long getTodoCount(){
+    return jdbcClient.sql("SELECT COUNT(*) FROM tasks WHERE status = 'TODO'").query(Long.class).single();
   }
 
 }

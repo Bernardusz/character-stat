@@ -29,7 +29,7 @@ public class TaskService {
 
   @Transactional
   public Optional<Long> save(Long userId, TaskCreate taskCreate) {
-    return taskRepository.save(userId, taskCreate);
+    return taskRepository.save(userId, taskCreate, taskRepository.getTodoCount());
   }
 
   @Transactional

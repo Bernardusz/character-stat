@@ -69,10 +69,16 @@
 				</div>
 				</div>
 
-				<div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-					<h2 class="text-xl font-bold mb-2 tracking-tight text-slate-200 flex items-center space-x-2">
-						<span>📥 Standalone Tasks Bucket</span>
-					</h2>
+				<div class="bg-background border border-primary rounded-xl p-6 shadow-xl">
+					<div class="flex-col flex md:flex-row justify-between">
+						<h2 class="text-xl font-bold mb-2 tracking-tight text-foreground flex items-center space-x-2">
+							<span>📥 Standalone Tasks Bucket</span>
+						</h2>
+						@let taskCreation = "/profiles/" + profileState.activeProfile()?.id + "/tasks/create";
+						<a class="bg-primary rounded-2xl p-2 text-background btn-primary text-center transition" [routerLink]="taskCreation">
+							Create
+						</a>
+					</div>
 					<p class="text-xs text-slate-400 mb-4">Quick modifications or thoughts that haven't been compiled into a distinct notebook project container.</p>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -85,6 +91,40 @@
 						}
 					</div>
 				</div>
+		</section>
+		<section class="section grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6" cdkDropListGroup>
+			<task-container
+				title="TODO"
+				id="TODO"
+				[tasks]="todoTasks() ?? []"
+				[isAddTaskAllowed]="true"
+				(dropped)="onCardDropped($event)"
+				(deleteTask)="deleteTask($event)"
+			/>
+			<task-container
+				title="PROGRESS"
+				id="PROGRESS"
+				[tasks]="progressTasks() ?? []"
+				[isAddTaskAllowed]="false"
+				(dropped)="onCardDropped($event)"
+				(deleteTask)="deleteTask($event)"
+			/>
+			<task-container
+				title="REVIEW"
+				id="REVIEW"
+				[tasks]="reviewTasks() ?? []"
+				[isAddTaskAllowed]="false"
+				(dropped)="onCardDropped($event)"
+				(deleteTask)="deleteTask($event)"
+			/>
+			<task-container
+				title="DONE"
+				id="DONE"
+				[tasks]="doneTasks() ?? []"
+				[isAddTaskAllowed]="false"
+				(dropped)="onCardDropped($event)"
+				(deleteTask)="deleteTask($event)"
+			/>
 		</section>
 	}
 </main>

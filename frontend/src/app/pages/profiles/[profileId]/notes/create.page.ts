@@ -6,8 +6,6 @@ import { NoteCreationEdit } from "@/app/types/dashboard.types";
 import { RouteMeta } from "@analogjs/router";
 import { Component, inject } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import { error } from "node:console";
-import { switchMap } from "rxjs";
 
 export const routeMeta: RouteMeta = {
 	canActivate: [profileGuard],

@@ -21,6 +21,12 @@
 				<button class="text-background btn-primary bg-red-500 p-2 rounded-2xl" (click)="deleteNote(note.noteSummary.id)">
 					Delete this note
 				</button>
+				<a [routerLink]="['/profiles', profileState.activeProfile()?.id, 'tasks', 'create']" class="text-background btn-primary bg-primary p-2 rounded-2xl"
+					[queryParams]="{ noteId: this.noteId }"
+				>
+					
+					Create a task based on this note
+				</a>
 			</div>
 			<div class="flex flex-col items-center justify-between">
 				<h1>{{ note.noteSummary.title }}</h1>
@@ -32,10 +38,9 @@
 			<p>{{ note.content }}</p>		
 		</section>
 		<aside>
-			@let taskCreationUrl = "/profiles" + profileState.activeProfile()?.id + "/tasks/create?note=" + note.noteSummary.id;	
 			<div class="flex flex-col xl:flex-row justify-between w-full">
 				<h2>Related task</h2>
-				<a [routerLink]="taskCreationUrl"></a>
+				<a [routerLink]="taskCreationUrl()"></a>
 			</div>
 			@for (task of note.noteSummary.tasks; track $index) {
 				<app-task-item [task]="task"></app-task-item>

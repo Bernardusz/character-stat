@@ -11,13 +11,13 @@ export interface CharacterStats {
 }
 
 export interface TaskSummary {
-  id: number;
+  id: string;
   noteId: number | null;
   noteTitle: string | null;
   title: string;
   position: number;
   urgencyTier: 'LIGHT' | 'MEDIUM' | 'IMPORTANT' | 'HEAVY' | 'IMPACTFUL';
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
+  status: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE'
   createdAt: string;
 }
 
@@ -26,6 +26,42 @@ export interface NoteInventoryTree {
   title: string;
   category: 'PROJECT' | 'LEARNING' | 'BRAINDUMP';
   tasks: TaskSummary[];
+}
+
+export interface Task {
+  id: string | null;
+  noteId: string | null;
+  noteTitle: string | null
+  title: string;
+  description: string;
+  position: string;
+  urgencyTier: 'LIGHT' | 'MEDIUM' | 'IMPORTANT' | 'HEAVY' | 'IMPACTFUL';
+  status: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE';
+  createdAt: string;
+}
+
+export interface TaskEditCreation{
+  id: string | null;
+  noteId: string | null;
+  title: string;
+  description: string;
+  urgencyTier: 'LIGHT' | 'MEDIUM' | 'IMPORTANT' | 'HEAVY' | 'IMPACTFUL';
+  status: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE';
+}
+
+export interface TaskEdit{
+	title: string;
+	description: string;
+	urgencyTier: 'LIGHT' | 'MEDIUM' | 'IMPORTANT' | 'HEAVY' | 'IMPACTFUL';
+	status: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE';
+}
+
+export interface TaskCreation{
+	noteId: string | null;
+	title: string;
+	description: string;
+	urgencyTier: 'LIGHT' | 'MEDIUM' | 'IMPORTANT' | 'HEAVY' | 'IMPACTFUL';
+	status: 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE';
 }
 
 export interface NoteCreationEdit {
